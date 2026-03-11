@@ -35,5 +35,24 @@ with open(file_path, newline="") as csvfile:
         accounts[payer].payDebt(receiver, date, amount, narrative)
         accounts[receiver].getDebt(payer, date, amount, narrative)
 
+while True:
+    command = input("Enter command (List All / List [Name]): ").strip()
+    
+    if command.lower() == "list all":
+        for account in accounts.values():
+            status = "owes" if account.balance < 0 else "is owed"
+            print(f"{account.name} {status} {abs(account.balance)}")
+    elif command.lower().startswith("list "):
+        name = command[5:].strip()
+        if name in accounts:
+            account = accounts[name]
+            print(f"\nTransactions for {name} (Balance: {account.balance}):")
+            for t in account.transactions:
+                print(t)
+        else:
+            print(f"No account found for '{name}'.")
+    else:
+        break
+
 
 
